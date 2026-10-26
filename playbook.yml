@@ -1,0 +1,40 @@
+---
+- name: Automatizacion de los servidores Ubuntu
+  hosts: servidores
+  become: true
+  tasks:
+    - name: Actualizar paquetes de APT
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+        cache_valid_time: 3600
+
+    - name: Crear el usuario itla
+      ansible.builtin.user:
+        name: itla
+        shell: /bin/bash
+        create_home: true
+        state: present
+
+    - name: Crear la carpeta app
+      ansible.builtin.file:
+        path: /home/itla/app
+        state: directory
+        owner: itla
+        group: itla
+        mode: "0755"
+
+    - name: Crear el archivo hola.txt en app
+      ansible.builtin.copy:
+        dest: /home/itla/app/hola.txt
+        content: "Hola desde {{ inventory_hostname }}\n"
+        owner: itla
+        group: itla
+        mode: "0644"
+
+    - name: Instalar cowsay y htop
+      ansible.builtin.apt:
+        name:
+          - cowsay
+          - htop
+        state: present

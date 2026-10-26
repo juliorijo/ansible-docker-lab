@@ -1,0 +1,53 @@
+x-server: &server
+  build: .
+  image: ubuntu-ssh-ansible:latest
+  restart: unless-stopped
+
+services:
+  server1:
+    <<: *server
+    container_name: server1
+    hostname: server1
+    networks:
+      lab:
+        ipv4_address: 172.28.0.11
+    ports: ["2201:22"]
+  server2:
+    <<: *server
+    container_name: server2
+    hostname: server2
+    networks:
+      lab:
+        ipv4_address: 172.28.0.12
+    ports: ["2202:22"]
+  server3:
+    <<: *server
+    container_name: server3
+    hostname: server3
+    networks:
+      lab:
+        ipv4_address: 172.28.0.13
+    ports: ["2203:22"]
+  server4:
+    <<: *server
+    container_name: server4
+    hostname: server4
+    networks:
+      lab:
+        ipv4_address: 172.28.0.14
+    ports: ["2204:22"]
+  server5:
+    <<: *server
+    container_name: server5
+    hostname: server5
+    networks:
+      lab:
+        ipv4_address: 172.28.0.15
+    ports: ["2205:22"]
+
+networks:
+  lab:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
